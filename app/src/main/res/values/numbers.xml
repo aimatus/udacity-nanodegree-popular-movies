@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    
+    <integer name="popular_movies_loader_id">22</integer>
+    <integer name="movie_reviews_loader_id">24</integer>
+    
+</resources>

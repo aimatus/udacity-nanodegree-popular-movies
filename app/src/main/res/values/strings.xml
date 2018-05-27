@@ -1,3 +1,47 @@
 <resources>
-    <string name="app_name">PopularMovies</string>
+    <string name="app_name">Popular Movies</string>
+    <string name="sort_by_popularity">Popular Movies</string>
+    <string name="sort_by_rating">Top Rated Movies</string>
+    <string name="get_favorites">Favorite Movies</string>
+    <string name="movie_poster_content_description">Movie Poster</string>
+    <string name="movie_title">Movie Title</string>
+    <string name="movie_year">Year</string>
+    <string name="movie_rating">Rating</string>
+    <string name="movie_overview">Overview…</string>
+    <string name="error_message_no_internet_connection">Oops! Something went wrong.\n\n:(\n\nPlease check your Internet connection and try again.</string>
+    <string name="no_reviews_available">No reviews available.</string>
+    <string name="no_favorites_available">No favorites added yet!\nAdd some :)</string>
+    <string name="no_trailers_available">No trailers available.</string>
+    <string name="fav_icon">Favorite icon</string>
+    <string name="play_icon">Play icon</string>
+    <string name="trailers">Trailers</string>
+    <string name="reviews">Reviews</string>
+
+    <string name="trailer_mime_type">text/plain</string>
+    <string name="trailer_chooser_title">Share via…</string>
+
+    <!-- Keys -->
+    <string name="movie_id_key" translatable="false">movie_id</string>
+    <string name="is_favorite_tag" translatable="false">is_favorite</string>
+    <string name="is_not_favorite_tag" translatable="false">is_not_favorite</string>
+    <string name="movie_key" translatable="false">MOVIE</string>
+    <string name="grid_criteria" translatable="false">grid_criteria</string>
+    <string name="favorite_tag" translatable="false">favorite_tag</string>
+
+    <!-- Toast text -->
+    <string name="removed_from_favorites">Removed from favorites.</string>
+    <string name="added_to_favorites">Added to favorites.</string>
+    <string name="error_no_app_available">There\'s no app available to play this video.</string>
+    <string name="rating_text" translatable="false">%1$s/10</string>
+    <string name="error_share_toast">No available trailer to share.</string>
+
+    <!-- Constants -->
+    <string name="trailer" translatable="false">Trailer</string>
+    <string name="youtube" translatable="false">YouTube</string>
+    <string name="favorites_criteria" translatable="false">favorites</string>
+
+    <!-- URLs -->
+    <string name="youtube_video_url" translatable="false">https://www.youtube.com/watch?v=%1$s</string>
+    <string name="the_movie_db_poster_path" translatable="false">http://image.tmdb.org/t/p/w185%1$s</string>
+
 </resources>
