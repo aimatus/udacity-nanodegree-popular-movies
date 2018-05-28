@@ -9,11 +9,6 @@ import com.aimatus.popularmovies.movie.PopularMovie;
  */
 public interface PopularMoviesAdapterOnClickHandler {
 
-    /**
-     * Method that receives a PopularMovie.
-     *
-     * @param movie passed movie.
-     */
     void onClick(PopularMovie movie);
 
 }

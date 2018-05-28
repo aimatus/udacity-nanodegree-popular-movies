@@ -17,24 +17,13 @@ public class PopularMoviesViewHolder extends ViewHolder implements View.OnClickL
     public final ImageView posterImageView;
     private final PopularMoviesAdapter popularMoviesAdapter;
 
-    /**
-     * Constructor which receives an view and an adapter.
-     *
-     * @param itemView             movie poster ImageView.
-     * @param popularMoviesAdapter popular movies adapter.
-     */
     public PopularMoviesViewHolder(View itemView, PopularMoviesAdapter popularMoviesAdapter) {
         super(itemView);
-        this.posterImageView = (ImageView) itemView.findViewById(R.id.iv_movie_poster);
-        itemView.setOnClickListener(this);
+        this.posterImageView = itemView.findViewById(R.id.iv_movie_poster);
         this.popularMoviesAdapter = popularMoviesAdapter;
+        itemView.setOnClickListener(this);
     }
 
-    /**
-     * OnClick action that detects the movie clicked and passes to the adapter.
-     *
-     * @param v clicked view.
-     */
     @Override
     public void onClick(View v) {
         int adapterPosition = getAdapterPosition();

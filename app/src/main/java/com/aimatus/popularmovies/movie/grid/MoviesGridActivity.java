@@ -1,5 +1,6 @@
 package com.aimatus.popularmovies.movie.grid;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -32,83 +33,53 @@ public class MoviesGridActivity extends AppCompatActivity
         implements PopularMoviesAdapterOnClickHandler,
         LoaderManager.LoaderCallbacks<PopularMoviesQueryResult> {
 
-    public static final String POPULAR_CRITERIA = "popular";
-    public static final String TOP_RATED_CRITERIA = "top_rated";
-    public static final String FAVORITES_CRITERIA = "favorites";
+    private final String POPULAR_CRITERIA = "popular";
+    private final String TOP_RATED_CRITERIA = "top_rated";
+    private final String FAVORITES_CRITERIA = "favorites";
 
-    /**
-     * A reference to this activity.
-     */
     private Activity mParentActivity;
-
-    /**
-     * Container for the "swipe to refresh" action.
-     */
     private SwipeRefreshLayout swipeContainer;
-
-    /**
-     * RecyclerView for the movies grid.
-     */
     private RecyclerView mRecyclerView;
-
-    /**
-     * Adapter for the RecyclerView.
-     */
     private PopularMoviesAdapter mPopularMoviesAdapter;
-
-    /**
-     * TextView for displaying errors at fetching movies.
-     */
     private TextView mErrorMessageTextView;
-
-    /**
-     * ProgressBar to show fetching movies task.
-     */
     private ProgressBar mProgressBar;
-
-    /**
-     * Sorting criteria member variable.
-     */
     private String mQueryCriteria;
 
-    /**
-     * OnCreate method that initializes UI elements and retrieves popular movies.
-     *
-     * @param savedInstanceState default saved instance.
-     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_movies_grid);
-
         this.mParentActivity = this;
-
-        this.swipeContainer = (SwipeRefreshLayout) findViewById(R.id.swipe_refresh_layout);
-
-        this.mErrorMessageTextView = (TextView) findViewById(R.id.tv_error_message_display);
-        this.mProgressBar = (ProgressBar) findViewById(R.id.pb_loading_indicator);
-        this.mRecyclerView = (RecyclerView) findViewById(R.id.rv_movies_grid);
-        this.mPopularMoviesAdapter = new PopularMoviesAdapter(this);
-
-        final int MOVIES_GRID_COLUMNS = 2;
-        GridLayoutManager gridLayoutManager = new GridLayoutManager(this, MOVIES_GRID_COLUMNS);
-
-        mRecyclerView.setLayoutManager(gridLayoutManager);
-        mRecyclerView.setAdapter(mPopularMoviesAdapter);
-        mRecyclerView.setHasFixedSize(true);
-
+        initViews();
+        initRecyclerView();
         initSwipeContainerRefreshListener(this);
+        setupQueryCriteria(savedInstanceState);
+        getSupportLoaderManager().initLoader(getResources().getInteger(R.integer.popular_movies_loader_id), null, this);
+    }
 
-        mProgressBar.setVisibility(View.VISIBLE);
-
+    private void setupQueryCriteria(Bundle savedInstanceState) {
         if (savedInstanceState != null && savedInstanceState.containsKey(getString(R.string.grid_criteria))) {
             mQueryCriteria = savedInstanceState.getString(getString(R.string.grid_criteria));
         } else {
             mQueryCriteria = POPULAR_CRITERIA;
         }
+    }
 
-        getSupportLoaderManager().initLoader(getResources().getInteger(R.integer.popular_movies_loader_id), null, this);
+    private void initRecyclerView() {
+        final int MOVIES_GRID_COLUMNS = 2;
+        this.mPopularMoviesAdapter = new PopularMoviesAdapter(this);
+        GridLayoutManager gridLayoutManager = new GridLayoutManager(this, MOVIES_GRID_COLUMNS);
+        mRecyclerView.setLayoutManager(gridLayoutManager);
+        mRecyclerView.setAdapter(mPopularMoviesAdapter);
+        mRecyclerView.setHasFixedSize(true);
+    }
 
+    private void initViews() {
+        swipeContainer = findViewById(R.id.swipe_refresh_layout);
+        mErrorMessageTextView = findViewById(R.id.tv_error_message_display);
+        mProgressBar = findViewById(R.id.pb_loading_indicator);
+        mRecyclerView = findViewById(R.id.rv_movies_grid);
+        mProgressBar.setVisibility(View.VISIBLE);
     }
 
     @Override
@@ -127,11 +98,6 @@ public class MoviesGridActivity extends AppCompatActivity
         }
     }
 
-    /**
-     * Initializes the onRefresh() method for the SwipeContainer.
-     *
-     * @param moviesGridActivity parent activity.
-     */
     private void initSwipeContainerRefreshListener(final MoviesGridActivity moviesGridActivity) {
         swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
@@ -152,7 +118,6 @@ public class MoviesGridActivity extends AppCompatActivity
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-
         switch (item.getItemId()) {
             case R.id.sort_by_popularity:
                 sortBy(POPULAR_CRITERIA);
@@ -166,14 +131,8 @@ public class MoviesGridActivity extends AppCompatActivity
             default:
                 return super.onOptionsItemSelected(item);
         }
-
     }
 
-    /**
-     * Sorting method by the given criteria.
-     *
-     * @param criteria sorting criteria: popular or top_rated;
-     */
     private void sortBy(String criteria) {
         mErrorMessageTextView.setVisibility(View.INVISIBLE);
         mRecyclerView.setVisibility(View.INVISIBLE);
@@ -190,11 +149,6 @@ public class MoviesGridActivity extends AppCompatActivity
         getSupportLoaderManager().restartLoader(getResources().getInteger(R.integer.popular_movies_loader_id), null, this);
     }
 
-    /**
-     * Starts a new activity with the movie detailed information.
-     *
-     * @param movie movie o display its details.
-     */
     @Override
     public void onClick(PopularMovie movie) {
         Intent intent = new Intent(MoviesGridActivity.this, MovieDetailActivity.class);
@@ -202,6 +156,7 @@ public class MoviesGridActivity extends AppCompatActivity
         startActivity(intent);
     }
 
+    @SuppressLint("StaticFieldLeak")
     @Override
     public Loader<PopularMoviesQueryResult> onCreateLoader(int id, final Bundle args) {
 
@@ -275,16 +230,12 @@ public class MoviesGridActivity extends AppCompatActivity
 
     @Override
     public void onLoadFinished(Loader<PopularMoviesQueryResult> loader, PopularMoviesQueryResult popularMoviesQueryResult) {
-        if (popularMoviesQueryResult != null) {
-            mPopularMoviesAdapter.setMovies(popularMoviesQueryResult.getResults());
-            swipeContainer.setRefreshing(false);
-            showMoviesDataView();
-        } else {
-            mErrorMessageTextView.setText(getString(R.string.error_message_no_internet_connection));
-            showErrorMessage();
-        }
+        showMovies(popularMoviesQueryResult);
         mProgressBar.setVisibility(View.INVISIBLE);
+        updateActivityTitle();
+    }
 
+    private void updateActivityTitle() {
         switch (mQueryCriteria) {
             case POPULAR_CRITERIA:
                 setTitle(getString(R.string.sort_by_popularity));
@@ -294,13 +245,28 @@ public class MoviesGridActivity extends AppCompatActivity
                 break;
             case FAVORITES_CRITERIA:
                 setTitle(getString(R.string.get_favorites));
-                if (mPopularMoviesAdapter.movies.size() == 0) {
-                    mErrorMessageTextView.setText(getString(R.string.no_favorites_available));
-                    showErrorMessage();
-                }
+                showMessageIfMoviesHasNotBeenAddedYet();
                 break;
         }
+    }
 
+    private void showMessageIfMoviesHasNotBeenAddedYet() {
+        if (mPopularMoviesAdapter.movies.isEmpty()) {
+            mErrorMessageTextView.setText(getString(R.string.no_favorites_available));
+            showErrorMessage();
+        }
+    }
+
+    private void showMovies(PopularMoviesQueryResult popularMoviesQueryResult) {
+        if (popularMoviesQueryResult != null) {
+            mPopularMoviesAdapter.setMovies(popularMoviesQueryResult.getResults());
+            swipeContainer.setRefreshing(false);
+            mErrorMessageTextView.setVisibility(View.INVISIBLE);
+            mRecyclerView.setVisibility(View.VISIBLE);
+        } else {
+            mErrorMessageTextView.setText(getString(R.string.error_message_no_internet_connection));
+            showErrorMessage();
+        }
     }
 
     @Override
@@ -309,17 +275,6 @@ public class MoviesGridActivity extends AppCompatActivity
         mPopularMoviesAdapter.notifyDataSetChanged();
     }
 
-    /**
-     * Shows movies grid and hides error messages.
-     */
-    private void showMoviesDataView() {
-        mErrorMessageTextView.setVisibility(View.INVISIBLE);
-        mRecyclerView.setVisibility(View.VISIBLE);
-    }
-
-    /**
-     * Shows error message and hides movie grid.
-     */
     private void showErrorMessage() {
         mErrorMessageTextView.setVisibility(View.VISIBLE);
         mRecyclerView.setVisibility(View.INVISIBLE);
