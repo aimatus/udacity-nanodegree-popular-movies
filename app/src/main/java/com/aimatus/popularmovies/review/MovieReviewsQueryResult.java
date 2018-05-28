@@ -4,11 +4,6 @@ import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
 
-/**
- * Class that represents a result query from TheMovieDB.
- *
- * @author Abraham Matus
- */
 public class MovieReviewsQueryResult {
 
     private int id;

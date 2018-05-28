@@ -1,6 +1,7 @@
 package com.aimatus.popularmovies.review;
 
 import android.content.Context;
+import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,35 +12,29 @@ import com.aimatus.popularmovies.R;
 
 import java.util.List;
 
-/**
- * Adapter for the movie reviews RecyclerView.
- *
- * @author Abraham Matus
- */
 public class MovieReviewsAdapter extends RecyclerView.Adapter<MovieReviewsAdapter.MovieReviewsViewHolder> {
 
     public static List<MovieReview> reviews;
 
-    public MovieReviewsAdapter(List<MovieReview> reviews) {
-        this.reviews = reviews;
+    MovieReviewsAdapter(List<MovieReview> reviews) {
+        MovieReviewsAdapter.reviews = reviews;
     }
 
+    @NonNull
     @Override
-    public MovieReviewsAdapter.MovieReviewsViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-
+    public MovieReviewsAdapter.MovieReviewsViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         Context context = parent.getContext();
         int layoutIdForMovieItem = R.layout.movie_review_item;
         LayoutInflater layoutInflater = LayoutInflater.from(context);
         final boolean shouldAttachToParentImmediately = false;
-
         View itemView = layoutInflater.inflate(layoutIdForMovieItem, parent, shouldAttachToParentImmediately);
-
         return new MovieReviewsViewHolder(itemView);
     }
 
     @Override
-    public void onBindViewHolder(MovieReviewsAdapter.MovieReviewsViewHolder holder, int position) {
-        holder.mAuthorTextView.setText("- " + reviews.get(position).getAuthor());
+    public void onBindViewHolder(@NonNull MovieReviewsAdapter.MovieReviewsViewHolder holder, int position) {
+        String reviewAuthor = String.format("- %s", reviews.get(position).getAuthor());
+        holder.mAuthorTextView.setText(reviewAuthor);
         holder.mReviewTextView.setText(reviews.get(position).getContent());
     }
 
@@ -50,17 +45,15 @@ public class MovieReviewsAdapter extends RecyclerView.Adapter<MovieReviewsAdapte
         return reviews.size();
     }
 
-    public static class MovieReviewsViewHolder extends RecyclerView.ViewHolder {
+    static class MovieReviewsViewHolder extends RecyclerView.ViewHolder {
 
-        public TextView mAuthorTextView;
-        public TextView mReviewTextView;
+        TextView mAuthorTextView;
+        TextView mReviewTextView;
 
-        public MovieReviewsViewHolder(View itemView) {
+        MovieReviewsViewHolder(View itemView) {
             super(itemView);
-            this.mAuthorTextView = (TextView) itemView.findViewById(R.id.tv_review_author);
-            this.mReviewTextView = (TextView) itemView.findViewById(R.id.tv_review_content);
+            this.mAuthorTextView = itemView.findViewById(R.id.tv_review_author);
+            this.mReviewTextView = itemView.findViewById(R.id.tv_review_content);
         }
-
     }
-
 }

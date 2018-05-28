@@ -1,10 +1,5 @@
 package com.aimatus.popularmovies.review;
 
-/**
- * Class which represents a movie review from a MovieReviewsQueryResult.
- *
- * @author Abraham Matus
- */
 public class MovieReview {
 
     private String id;

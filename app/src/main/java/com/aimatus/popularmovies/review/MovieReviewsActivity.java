@@ -1,8 +1,10 @@
 package com.aimatus.popularmovies.review;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.AsyncTaskLoader;
 import android.support.v4.content.Loader;
@@ -14,20 +16,13 @@ import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-
 import com.aimatus.popularmovies.R;
 import com.aimatus.popularmovies.utils.NetworkUtils;
 import com.google.gson.Gson;
-
 import java.io.IOException;
 import java.net.URL;
 import java.util.List;
 
-/**
- * Activity which displays movie reviews.
- *
- * @author Abraham Matus
- */
 public class MovieReviewsActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<MovieReviewsQueryResult> {
 
     private Activity mParentActivity;
@@ -43,21 +38,24 @@ public class MovieReviewsActivity extends AppCompatActivity implements LoaderMan
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_movie_reviews);
-
-        mParentActivity = this;
-        mRecyclerView = (RecyclerView) findViewById(R.id.rv_reviews);
-        mProgressBar = (ProgressBar) findViewById(R.id.pb_reviews_loading_indicator);
-        mReviewsErrorTextView = (TextView) findViewById(R.id.tv_reviews_error);
-        mFrameLayout = (FrameLayout) findViewById(R.id.fl_reviews);
-
+        initViews();
         Intent intent = getIntent();
-
         if (intent.hasExtra(getString(R.string.movie_id_key))) {
             movieId = intent.getIntExtra(getString(R.string.movie_id_key), 0);
             getSupportLoaderManager().initLoader(getResources().getInteger(R.integer.movie_reviews_loader_id), null, this);
         }
     }
 
+    private void initViews() {
+        mParentActivity = this;
+        mRecyclerView =  findViewById(R.id.rv_reviews);
+        mProgressBar = findViewById(R.id.pb_reviews_loading_indicator);
+        mReviewsErrorTextView = findViewById(R.id.tv_reviews_error);
+        mFrameLayout = findViewById(R.id.fl_reviews);
+    }
+
+    @NonNull
+    @SuppressLint("StaticFieldLeak")
     @Override
     public Loader<MovieReviewsQueryResult> onCreateLoader(int id, Bundle args) {
 
@@ -76,29 +74,18 @@ public class MovieReviewsActivity extends AppCompatActivity implements LoaderMan
 
             @Override
             public MovieReviewsQueryResult loadInBackground() {
-
                 if (!NetworkUtils.hasConnectivity(mParentActivity)) {
                     return null;
                 }
-
                 URL moviesQuery = NetworkUtils.getMovieReviewsUrl(movieId);
-
                 try {
-                    String jsonMovieReviews = NetworkUtils
-                            .getResponseFromHttpUrl(moviesQuery);
-
+                    String jsonMovieReviews = NetworkUtils.getResponseFromHttpUrl(moviesQuery);
                     Gson gson = new Gson();
-
-                    MovieReviewsQueryResult movieReviewsQueryResult
-                            = gson.fromJson(jsonMovieReviews, MovieReviewsQueryResult.class);
-
-                    return movieReviewsQueryResult;
-
+                    return gson.fromJson(jsonMovieReviews, MovieReviewsQueryResult.class);
                 } catch (IOException e) {
                     e.printStackTrace();
                     return null;
                 }
-
             }
 
             @Override
@@ -110,26 +97,25 @@ public class MovieReviewsActivity extends AppCompatActivity implements LoaderMan
     }
 
     @Override
-    public void onLoadFinished(Loader<MovieReviewsQueryResult> loader, MovieReviewsQueryResult movieReviewsQueryResult) {
-
+    public void onLoadFinished(@NonNull Loader<MovieReviewsQueryResult> loader, MovieReviewsQueryResult movieReviewsQueryResult) {
         if (movieReviewsQueryResult == null) {
             setErrorMessage(getString(R.string.error_message_no_internet_connection));
             return;
         }
-
         List<MovieReview> reviews = movieReviewsQueryResult.getResults();
-
         if (reviews.size() == 0) {
             setErrorMessage(getString(R.string.no_reviews_available));
             return;
         }
+        populateReviewsRecyclerView(reviews);
+    }
 
+    private void populateReviewsRecyclerView(List<MovieReview> reviews) {
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         MovieReviewsAdapter movieReviewsAdapter = new MovieReviewsAdapter(reviews);
         mRecyclerView.setAdapter(movieReviewsAdapter);
         mProgressBar.setVisibility(View.INVISIBLE);
         mRecyclerView.setVisibility(View.VISIBLE);
-
     }
 
     private void setErrorMessage(String errorMessage) {
@@ -142,7 +128,7 @@ public class MovieReviewsActivity extends AppCompatActivity implements LoaderMan
     }
 
     @Override
-    public void onLoaderReset(Loader<MovieReviewsQueryResult> loader) {
+    public void onLoaderReset(@NonNull Loader<MovieReviewsQueryResult> loader) {
 
     }
 }
