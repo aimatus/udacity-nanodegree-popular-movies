@@ -16,7 +16,6 @@ public class PopularMoviesContentProvider extends ContentProvider {
     public static final int MOVIES_WITH_ID = 101;
 
     private static final UriMatcher sUriMatcher = buildUriMatcher();
-
     private PopularMoviesDbHelper popularMoviesDbHelper;
 
     public static UriMatcher buildUriMatcher() {
@@ -36,33 +35,23 @@ public class PopularMoviesContentProvider extends ContentProvider {
     @Override
     public Cursor query(@NonNull Uri uri, @Nullable String[] projection, @Nullable String selection,
                         @Nullable String[] selectionArgs, @Nullable String sortOrder) {
-
         final SQLiteDatabase sqLiteDatabase = popularMoviesDbHelper.getReadableDatabase();
         int match = sUriMatcher.match(uri);
         Cursor cursor;
-
         switch (match) {
             case MOVIES:
-                cursor = sqLiteDatabase.query(
-                        PopularMoviesContract.MovieEntry.TABLE_NAME,
-                        projection,
-                        selection,
-                        selectionArgs,
-                        null,
-                        null,
-                        sortOrder);
+                cursor = sqLiteDatabase.query(PopularMoviesContract.MovieEntry.TABLE_NAME,
+                        projection, selection, selectionArgs, null, null, sortOrder);
                 break;
             case MOVIES_WITH_ID:
                 String customId = uri.getPathSegments().get(1);
-                cursor = sqLiteDatabase.query(
-                        PopularMoviesContract.MovieEntry.TABLE_NAME, null,
-                        PopularMoviesContract.MovieEntry.COLUMN_CUSTOM_ID + " = " + customId,
-                        null, null, null, null, null);
+                String selectByCustomId = PopularMoviesContract.MovieEntry.COLUMN_CUSTOM_ID + " = " + customId;
+                cursor = sqLiteDatabase.query(PopularMoviesContract.MovieEntry.TABLE_NAME, null,
+                        selectByCustomId, null, null, null, null, null);
                 break;
             default:
                 throw new UnsupportedOperationException("Unknown uri: " + uri);
         }
-
         cursor.setNotificationUri(getContext().getContentResolver(), uri);
         return cursor;
     }
@@ -76,53 +65,55 @@ public class PopularMoviesContentProvider extends ContentProvider {
     @Nullable
     @Override
     public Uri insert(@NonNull Uri uri, @Nullable ContentValues contentValues) {
-
         final SQLiteDatabase sqLiteDatabase = popularMoviesDbHelper.getWritableDatabase();
         int match = sUriMatcher.match(uri);
-
         Uri returnUri;
-
         switch (match) {
             case MOVIES:
-                long id = sqLiteDatabase.insert(
-                        PopularMoviesContract.MovieEntry.TABLE_NAME, null, contentValues);
-                if (id > 0) {
-                    returnUri = ContentUris.withAppendedId(PopularMoviesContract.MovieEntry.CONTENT_URI, id);
-                } else {
-                    throw new android.database.SQLException("Failed to insert row into " + uri);
-                }
+                returnUri = getInsertedMovieUri(uri, contentValues, sqLiteDatabase);
                 break;
             default:
                 throw new UnsupportedOperationException("Unknown uri: " + uri);
         }
+        return returnUri;
+    }
 
+    private Uri getInsertedMovieUri(@NonNull Uri uri, @Nullable ContentValues contentValues, SQLiteDatabase sqLiteDatabase) {
+        Uri returnUri;
+        long id = sqLiteDatabase.insert(
+                PopularMoviesContract.MovieEntry.TABLE_NAME, null, contentValues);
+        if (id > 0) {
+            returnUri = ContentUris.withAppendedId(PopularMoviesContract.MovieEntry.CONTENT_URI, id);
+        } else {
+            throw new android.database.SQLException("Failed to insert row into " + uri);
+        }
         return returnUri;
     }
 
     @Override
     public int delete(@NonNull Uri uri, @Nullable String s, @Nullable String[] strings) {
-
         final SQLiteDatabase sqLiteDatabase = popularMoviesDbHelper.getWritableDatabase();
         int match = sUriMatcher.match(uri);
-
         int deletedMovie;
-
         switch (match) {
             case MOVIES_WITH_ID:
-                String id = uri.getPathSegments().get(1);
-                deletedMovie = sqLiteDatabase.delete(
-                        PopularMoviesContract.MovieEntry.TABLE_NAME,
-                        PopularMoviesContract.MovieEntry.COLUMN_CUSTOM_ID + "=?",
-                        new String[]{id});
+                deletedMovie = getDeletedMovieId(uri, sqLiteDatabase);
                 break;
             default:
                 throw new UnsupportedOperationException("Unknown uri: " + uri);
         }
-
         if (deletedMovie != 0) {
             getContext().getContentResolver().notifyChange(uri, null);
         }
+        return deletedMovie;
+    }
 
+    private int getDeletedMovieId(@NonNull Uri uri, SQLiteDatabase sqLiteDatabase) {
+        int deletedMovie;
+        String id = uri.getPathSegments().get(1);
+        String whereClause = PopularMoviesContract.MovieEntry.COLUMN_CUSTOM_ID + "=?";
+        String[] whereArgs = {id};
+        deletedMovie = sqLiteDatabase.delete(PopularMoviesContract.MovieEntry.TABLE_NAME, whereClause, whereArgs);
         return deletedMovie;
     }
 

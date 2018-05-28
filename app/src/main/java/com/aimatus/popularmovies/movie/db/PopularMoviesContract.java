@@ -3,17 +3,11 @@ package com.aimatus.popularmovies.movie.db;
 import android.net.Uri;
 import android.provider.BaseColumns;
 
-/**
- * Adapter for the popular movies grid RecyclerView. Based on discussion on
- * https://stackoverflow.com/questions/17451931/how-to-use-a-contract-class-in-android
- *
- * @author Abraham Matus
- */
 public class PopularMoviesContract {
 
     public static final String AUTHORITY = "com.aimatus.popularmoviesoreo";
-    public static final Uri BASE_CONTENT_URI = Uri.parse("content://" + AUTHORITY);
     public static final String PATH_MOVIES = "movies";
+    static final Uri BASE_CONTENT_URI = Uri.parse("content://" + AUTHORITY);
 
     public static final String DATABASE_NAME = "popularmovies.db";
     public static final int DATABASE_VERSION = 1;
