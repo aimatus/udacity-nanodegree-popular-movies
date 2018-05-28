@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.AsyncTaskLoader;
 import android.support.v4.content.Loader;
@@ -142,7 +143,6 @@ public class MoviesGridActivity extends AppCompatActivity
     }
 
     private void getFavorites() {
-        PopularMovieDao dao = new PopularMovieDao(this);
         swipeContainer.setRefreshing(false);
         mProgressBar.setVisibility(View.INVISIBLE);
         mQueryCriteria = getString(R.string.favorites_criteria);
@@ -156,6 +156,7 @@ public class MoviesGridActivity extends AppCompatActivity
         startActivity(intent);
     }
 
+    @NonNull
     @SuppressLint("StaticFieldLeak")
     @Override
     public Loader<PopularMoviesQueryResult> onCreateLoader(int id, final Bundle args) {
@@ -201,12 +202,9 @@ public class MoviesGridActivity extends AppCompatActivity
 
             private PopularMoviesQueryResult getMoviesFromInternet(URL moviesQuery) {
                 try {
-                    String jsonPopularMovies = NetworkUtils
-                            .getResponseFromHttpUrl(moviesQuery);
+                    String jsonPopularMovies = NetworkUtils.getResponseFromHttpUrl(moviesQuery);
                     Gson gson = new Gson();
-                    PopularMoviesQueryResult popularMoviesQueryResult
-                            = gson.fromJson(jsonPopularMovies, PopularMoviesQueryResult.class);
-                    return popularMoviesQueryResult;
+                    return gson.fromJson(jsonPopularMovies, PopularMoviesQueryResult.class);
                 } catch (IOException e) {
                     e.printStackTrace();
                     return null;
@@ -229,7 +227,7 @@ public class MoviesGridActivity extends AppCompatActivity
     }
 
     @Override
-    public void onLoadFinished(Loader<PopularMoviesQueryResult> loader, PopularMoviesQueryResult popularMoviesQueryResult) {
+    public void onLoadFinished(@NonNull Loader<PopularMoviesQueryResult> loader, PopularMoviesQueryResult popularMoviesQueryResult) {
         showMovies(popularMoviesQueryResult);
         mProgressBar.setVisibility(View.INVISIBLE);
         updateActivityTitle();
@@ -270,7 +268,7 @@ public class MoviesGridActivity extends AppCompatActivity
     }
 
     @Override
-    public void onLoaderReset(Loader<PopularMoviesQueryResult> loader) {
+    public void onLoaderReset(@NonNull Loader<PopularMoviesQueryResult> loader) {
         mPopularMoviesAdapter.setMovies(null);
         mPopularMoviesAdapter.notifyDataSetChanged();
     }

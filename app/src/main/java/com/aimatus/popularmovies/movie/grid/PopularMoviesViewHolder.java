@@ -7,17 +7,12 @@ import android.widget.ImageView;
 import com.aimatus.popularmovies.movie.PopularMovie;
 import com.aimatus.popularmovies.R;
 
-/**
- * Cache of the children views for a popular movies list item.
- *
- * @author Abraham Matus
- */
 public class PopularMoviesViewHolder extends ViewHolder implements View.OnClickListener {
 
     public final ImageView posterImageView;
     private final PopularMoviesAdapter popularMoviesAdapter;
 
-    public PopularMoviesViewHolder(View itemView, PopularMoviesAdapter popularMoviesAdapter) {
+    PopularMoviesViewHolder(View itemView, PopularMoviesAdapter popularMoviesAdapter) {
         super(itemView);
         this.posterImageView = itemView.findViewById(R.id.iv_movie_poster);
         this.popularMoviesAdapter = popularMoviesAdapter;

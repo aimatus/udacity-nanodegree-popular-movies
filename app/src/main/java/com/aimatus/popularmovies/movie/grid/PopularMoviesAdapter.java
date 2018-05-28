@@ -1,6 +1,7 @@
 package com.aimatus.popularmovies.movie.grid;
 
 import android.content.Context;
+import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,23 +13,19 @@ import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
-/**
- * Adapter for the popular movies grid RecyclerView.
- *
- * @author Abraham Matus
- */
 public class PopularMoviesAdapter extends RecyclerView.Adapter<PopularMoviesViewHolder> {
 
     public final PopularMoviesAdapterOnClickHandler onClickHandler;
     public List<PopularMovie> movies;
     private Context context;
 
-    public PopularMoviesAdapter(PopularMoviesAdapterOnClickHandler onClickHandler) {
+    PopularMoviesAdapter(PopularMoviesAdapterOnClickHandler onClickHandler) {
         this.onClickHandler = onClickHandler;
     }
 
+    @NonNull
     @Override
-    public PopularMoviesViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public PopularMoviesViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         this.context = parent.getContext();
         int layoutIdForMovieItem = R.layout.movie_grid_item;
         LayoutInflater layoutInflater = LayoutInflater.from(context);
