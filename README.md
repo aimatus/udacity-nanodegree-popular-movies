@@ -3,6 +3,10 @@
 This project is based on **Popular Movies** project from the 2017 [Udacity's
 Associate Android Developer Fast Track Nanodegree Program](https://ae.udacity.com/course/associate-android-developer-fast-track--nd818).
 
+<p align="center"><br>
+<img src="https://raw.githubusercontent.com/aimatus/udacity-nanodegree-popular-movies/master/screenshots/device-2018-05-27-182010.png">
+</p>
+
 ## GETTING STARTED
 
 To run this project it is necessary to set up your own **TheMovieDB**
@@ -20,9 +24,7 @@ the_movie_db_api_key="here-goes-my-own-api-key"
 * [Gson](https://github.com/google/gson)
 * [Picasso](http://square.github.io/picasso/)
 
-## LICENCE
-
-### DISCLAIMER
+## DISCLAIMER
 
 Based on [Lara Martín Project Licence](https://github.com/laramartin/android_movies):
 
@@ -45,7 +47,7 @@ must be included in all works derived from this project.
 This project will continue to evolve, but Udacity's Nanodegree snapshot
 should be available in a project branch called: `udacity-nanodegree-popular-movies`
 
-### LICENCE
+## LICENCE
 
 ```
 Copyright 2018 Abraham Matus
