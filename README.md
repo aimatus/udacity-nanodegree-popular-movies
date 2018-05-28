@@ -7,11 +7,11 @@ Associate Android Developer Fast Track Nanodegree Program](https://ae.udacity.co
 <img src="https://raw.githubusercontent.com/aimatus/udacity-nanodegree-popular-movies/master/screenshots/device-2018-05-27-182010.png">
 </p>
 
-## GETTING STARTED
+## **GETTING STARTED**
 
 To run this project it is necessary to set up your own **TheMovieDB**
 API Key to your local `gradle.properties` file as it shown next. If the
-file doen't exist jus create it and add the API key:
+file doesn't exist jus create it and add the API key:
 
 ``` bash
 # In your ~/.gradle/gradle.properties file
@@ -19,12 +19,12 @@ file doen't exist jus create it and add the API key:
 the_movie_db_api_key="here-goes-my-own-api-key"
 ```
 
-## LIBRARIES
+## **LIBRARIES**
 
 * [Gson](https://github.com/google/gson)
 * [Picasso](http://square.github.io/picasso/)
 
-## DISCLAIMER
+## **DISCLAIMER**
 
 Based on [Lara Martín Project Licence](https://github.com/laramartin/android_movies):
 
@@ -47,7 +47,7 @@ must be included in all works derived from this project.
 This project will continue to evolve, but Udacity's Nanodegree snapshot
 should be available in a project branch called: `udacity-nanodegree-popular-movies`
 
-## LICENCE
+## **LICENSE**
 
 ```
 Copyright 2018 Abraham Matus
