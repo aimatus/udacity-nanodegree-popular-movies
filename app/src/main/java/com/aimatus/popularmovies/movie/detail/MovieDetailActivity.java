@@ -228,7 +228,7 @@ public class MovieDetailActivity extends AppCompatActivity
                 PopularMovieDao dao = new PopularMovieDao(mParentActivity);
                 switch (id) {
                     case LOADER_FETCH_MOVIE_TRAILERS:
-                        if (!NetworkUtils.hasConnectivity(mParentActivity)) {
+                        if (NetworkUtils.hasNoConnectivity(mParentActivity)) {
                             return null;
                         }
                         return fetchMovieTrailers();

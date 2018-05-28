@@ -181,7 +181,7 @@ public class MoviesGridActivity extends AppCompatActivity
                     return getLocalMovies();
                 }
 
-                if (!NetworkUtils.hasConnectivity(mParentActivity)) {
+                if (NetworkUtils.hasNoConnectivity(mParentActivity)) {
                     return null;
                 }
 

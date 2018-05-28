@@ -74,7 +74,7 @@ public class MovieReviewsActivity extends AppCompatActivity implements LoaderMan
 
             @Override
             public MovieReviewsQueryResult loadInBackground() {
-                if (!NetworkUtils.hasConnectivity(mParentActivity)) {
+                if (NetworkUtils.hasNoConnectivity(mParentActivity)) {
                     return null;
                 }
                 URL moviesQuery = NetworkUtils.getMovieReviewsUrl(movieId);
