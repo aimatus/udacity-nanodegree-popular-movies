@@ -6,11 +6,6 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.List;
 
-/**
- * Class which represents a popular movie result from a PopularMoviesQueryResult.
- *
- * @author Abraham Matus
- */
 public class PopularMovie implements Serializable {
 
     @SerializedName("vote_count")

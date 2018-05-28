@@ -176,17 +176,13 @@ public class MoviesGridActivity extends AppCompatActivity
 
             @Override
             public PopularMoviesQueryResult loadInBackground() {
-
                 if (mQueryCriteria.equals(FAVORITES_CRITERIA)) {
                     return getLocalMovies();
                 }
-
                 if (NetworkUtils.hasNoConnectivity(mParentActivity)) {
                     return null;
                 }
-
-                URL moviesQuery = null;
-
+                URL moviesQuery;
                 switch (mQueryCriteria) {
                     case POPULAR_CRITERIA:
                         moviesQuery = NetworkUtils.getPopularMoviesUrl();
@@ -197,7 +193,6 @@ public class MoviesGridActivity extends AppCompatActivity
                     default:
                         return null;
                 }
-
             }
 
             private PopularMoviesQueryResult getMoviesFromInternet(URL moviesQuery) {

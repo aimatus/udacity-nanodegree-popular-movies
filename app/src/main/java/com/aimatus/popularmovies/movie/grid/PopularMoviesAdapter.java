@@ -6,7 +6,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
 import com.aimatus.popularmovies.movie.PopularMovie;
 import com.aimatus.popularmovies.R;
 import com.squareup.picasso.Picasso;

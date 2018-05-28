@@ -274,19 +274,13 @@ public class MovieDetailActivity extends AppCompatActivity
                 setupFavoriteIcon((boolean) object);
                 break;
             case LOADER_ADD_TO_FAVORITES:
-                mToast = Toast.makeText(
-                        getApplicationContext(),
-                        getResources().getString(R.string.added_to_favorites),
-                        Toast.LENGTH_SHORT
-                );
+                mToast = Toast.makeText(getApplicationContext(),
+                        getResources().getString(R.string.added_to_favorites), Toast.LENGTH_SHORT);
                 mToast.show();
                 break;
             case LOADER_REMOVE_FROM_FAVORITES:
-                mToast = Toast.makeText(
-                        getApplicationContext(),
-                        getResources().getString(R.string.removed_from_favorites),
-                        Toast.LENGTH_SHORT
-                );
+                mToast = Toast.makeText(getApplicationContext(),
+                        getResources().getString(R.string.removed_from_favorites), Toast.LENGTH_SHORT);
                 mToast.show();
                 break;
         }

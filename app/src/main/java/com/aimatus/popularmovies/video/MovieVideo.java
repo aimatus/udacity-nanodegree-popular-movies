@@ -2,11 +2,6 @@ package com.aimatus.popularmovies.video;
 
 import com.google.gson.annotations.SerializedName;
 
-/**
- * Class which represents a movie video from a MovieVideosQueryResult.
- *
- * @author Abraham Matus
- */
 public class MovieVideo {
 
     private String id;

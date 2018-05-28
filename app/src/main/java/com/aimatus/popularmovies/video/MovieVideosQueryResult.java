@@ -2,11 +2,6 @@ package com.aimatus.popularmovies.video;
 
 import java.util.List;
 
-/**
- * Class that represents a result query from TheMovieDB.
- *
- * @author Abraham Matus
- */
 public class MovieVideosQueryResult {
 
     private int id;
