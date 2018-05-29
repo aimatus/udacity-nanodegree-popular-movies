@@ -43,5 +43,6 @@
     <!-- URLs -->
     <string name="youtube_video_url" translatable="false">https://www.youtube.com/watch?v=%1$s</string>
     <string name="the_movie_db_poster_path" translatable="false">http://image.tmdb.org/t/p/w185%1$s</string>
+    <string name="share">Share</string>
 
 </resources>

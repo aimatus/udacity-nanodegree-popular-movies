@@ -1,6 +1,6 @@
 package com.aimatus.popularmovies.review;
 
-public class MovieReview {
+class MovieReview {
 
     private String id;
     private String author;

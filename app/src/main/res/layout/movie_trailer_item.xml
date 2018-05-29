@@ -1,17 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-              android:layout_height="wrap_content"
-              android:divider="?android:attr/dividerVertical"
-              android:orientation="vertical"
-              android:showDividers="end">
+    android:layout_height="wrap_content"
+    android:divider="?android:attr/dividerVertical"
+    android:orientation="vertical"
+    android:showDividers="end">
 
     <LinearLayout
-
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        tools:ignore="UselessParent">
 
         <ImageView
             android:id="@+id/send_icon"
@@ -21,7 +22,7 @@
             android:adjustViewBounds="true"
             android:contentDescription="@string/play_icon"
             android:scaleType="centerCrop"
-            app:srcCompat="@drawable/ic_play_arrow_black_36dp"/>
+            app:srcCompat="@drawable/ic_play_arrow_black_36dp" />
 
         <TextView
             android:id="@+id/tv_movie_trailer_name"
@@ -30,10 +31,8 @@
             android:paddingBottom="16dp"
             android:paddingTop="16dp"
             android:textAllCaps="false"
-            android:textSize="20sp"
-            />
+            android:textSize="20sp" />
 
     </LinearLayout>
-
 
 </LinearLayout>

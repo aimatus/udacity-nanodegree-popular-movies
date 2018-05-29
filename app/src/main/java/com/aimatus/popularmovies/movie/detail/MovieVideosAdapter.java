@@ -53,7 +53,7 @@ public class MovieVideosAdapter extends RecyclerView.Adapter<MovieVideosAdapter.
 
     public static class TrailersViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
-        TextView trailerNameTextView;
+        final TextView trailerNameTextView;
 
         TrailersViewHolder(View itemView) {
             super(itemView);

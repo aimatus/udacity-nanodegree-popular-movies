@@ -14,8 +14,8 @@ import java.util.List;
 
 public class PopularMovieDao {
 
-    private Context context;
-    private Gson gson;
+    private final Context context;
+    private final Gson gson;
 
     public PopularMovieDao(Context context) {
         this.context = context;

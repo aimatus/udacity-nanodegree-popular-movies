@@ -14,7 +14,7 @@ import java.util.List;
 
 public class MovieReviewsAdapter extends RecyclerView.Adapter<MovieReviewsAdapter.MovieReviewsViewHolder> {
 
-    public static List<MovieReview> reviews;
+    private static List<MovieReview> reviews;
 
     MovieReviewsAdapter(List<MovieReview> reviews) {
         MovieReviewsAdapter.reviews = reviews;
@@ -47,8 +47,8 @@ public class MovieReviewsAdapter extends RecyclerView.Adapter<MovieReviewsAdapte
 
     static class MovieReviewsViewHolder extends RecyclerView.ViewHolder {
 
-        TextView mAuthorTextView;
-        TextView mReviewTextView;
+        final TextView mAuthorTextView;
+        final TextView mReviewTextView;
 
         MovieReviewsViewHolder(View itemView) {
             super(itemView);

@@ -14,13 +14,13 @@ import com.aimatus.popularmovies.movie.db.PopularMoviesContract.MovieEntry;
 
 public class PopularMoviesContentProvider extends ContentProvider {
 
-    public static final int MOVIES = 100;
-    public static final int MOVIES_WITH_ID = 101;
+    private static final int MOVIES = 100;
+    private static final int MOVIES_WITH_ID = 101;
 
     private static final UriMatcher sUriMatcher = buildUriMatcher();
     private PopularMoviesDbHelper popularMoviesDbHelper;
 
-    public static UriMatcher buildUriMatcher() {
+    private static UriMatcher buildUriMatcher() {
         UriMatcher uriMatcher = new UriMatcher(UriMatcher.NO_MATCH);
         uriMatcher.addURI(PopularMoviesContract.AUTHORITY, PopularMoviesContract.PATH_MOVIES, MOVIES);
         uriMatcher.addURI(PopularMoviesContract.AUTHORITY, PopularMoviesContract.PATH_MOVIES + "/#", MOVIES_WITH_ID);
@@ -40,6 +40,7 @@ public class PopularMoviesContentProvider extends ContentProvider {
         final SQLiteDatabase sqLiteDatabase = popularMoviesDbHelper.getReadableDatabase();
         int match = sUriMatcher.match(uri);
         Cursor cursor = getQueryCursor(uri, projection, selection, selectionArgs, sortOrder, sqLiteDatabase, match);
+        // noinspection ConstantConditions
         cursor.setNotificationUri(getContext().getContentResolver(), uri);
         return cursor;
     }
@@ -107,6 +108,7 @@ public class PopularMoviesContentProvider extends ContentProvider {
         int match = sUriMatcher.match(uri);
         int deletedMovie = getDeletedMovies(uri, sqLiteDatabase, match);
         if (deletedMovie != 0) {
+            // noinspection ConstantConditions
             getContext().getContentResolver().notifyChange(uri, null);
         }
         return deletedMovie;
@@ -115,18 +117,17 @@ public class PopularMoviesContentProvider extends ContentProvider {
     private int getDeletedMovies(@NonNull Uri uri, SQLiteDatabase sqLiteDatabase, int match) {
         switch (match) {
             case MOVIES_WITH_ID:
-                return getDeletedMovieId(uri, sqLiteDatabase);
+                return getDeletedMoviesById(uri, sqLiteDatabase);
             default:
                 throw new UnsupportedOperationException("Unknown uri: " + uri);
         }
     }
 
-    private int getDeletedMovieId(@NonNull Uri uri, SQLiteDatabase sqLiteDatabase) {
+    private int getDeletedMoviesById(@NonNull Uri uri, SQLiteDatabase sqLiteDatabase) {
         String id = uri.getPathSegments().get(1);
         String whereClause = MovieEntry.COLUMN_CUSTOM_ID + "= ?";
         String[] whereArgs = {id};
-        int deletedMovie = sqLiteDatabase.delete(MovieEntry.TABLE_NAME, whereClause, whereArgs);
-        return deletedMovie;
+        return sqLiteDatabase.delete(MovieEntry.TABLE_NAME, whereClause, whereArgs);
     }
 
     @Override

@@ -2,18 +2,20 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.aimatus.popularmovies">
 
-    <uses-permission android:name="android.permission.INTERNET"/>
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <application
         android:allowBackup="true"
+        android:fullBackupContent="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
-        <activity android:name=".movie.grid.MoviesGridActivity"
+        <activity
+            android:name=".movie.grid.MoviesGridActivity"
             android:launchMode="singleTop">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -23,11 +25,11 @@
 
         <activity
             android:name=".movie.detail.MovieDetailActivity"
-            android:parentActivityName=".movie.grid.MoviesGridActivity"
-            android:launchMode="singleTop">
+            android:launchMode="singleTop"
+            android:parentActivityName=".movie.grid.MoviesGridActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".movie.grid.MoviesGridActivity"/>
+                android:value=".movie.grid.MoviesGridActivity" />
         </activity>
 
         <activity
@@ -35,13 +37,13 @@
             android:parentActivityName=".movie.detail.MovieDetailActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".movie.detail.MovieDetailActivity"/>
+                android:value=".movie.detail.MovieDetailActivity" />
         </activity>
 
         <provider
             android:name=".movie.db.PopularMoviesContentProvider"
-            android:authorities="com.aimatus.popularmoviesoreo"
-            android:exported="false"/>
+            android:authorities="com.aimatus.popularmovies"
+            android:exported="false" />
 
     </application>
 

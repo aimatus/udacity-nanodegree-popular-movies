@@ -4,7 +4,7 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
-public class PopularMoviesDbHelper extends SQLiteOpenHelper {
+class PopularMoviesDbHelper extends SQLiteOpenHelper {
 
     PopularMoviesDbHelper(Context context) {
         super(context, PopularMoviesContract.DATABASE_NAME, null, PopularMoviesContract.DATABASE_VERSION);
