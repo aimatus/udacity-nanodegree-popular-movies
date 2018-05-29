@@ -4,8 +4,8 @@ import android.support.v7.widget.RecyclerView.ViewHolder;
 import android.view.View;
 import android.widget.ImageView;
 
-import com.aimatus.popularmovies.movie.PopularMovie;
 import com.aimatus.popularmovies.R;
+import com.aimatus.popularmovies.movie.PopularMovie;
 
 public class PopularMoviesViewHolder extends ViewHolder implements View.OnClickListener {
 

@@ -19,6 +19,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+
 import com.aimatus.popularmovies.R;
 import com.aimatus.popularmovies.movie.PopularMovie;
 import com.aimatus.popularmovies.movie.PopularMoviesQueryResult;
@@ -26,10 +27,11 @@ import com.aimatus.popularmovies.movie.db.PopularMovieDao;
 import com.aimatus.popularmovies.movie.detail.MovieDetailActivity;
 import com.aimatus.popularmovies.utils.NetworkUtils;
 import com.google.gson.Gson;
+
 import java.io.IOException;
 import java.net.URL;
 
-public class MoviesGridActivity extends AppCompatActivity implements PopularMoviesAdapterOnClickHandler,
+public class MoviesGridActivity extends AppCompatActivity implements PopularMoviesAdapter.PopularMoviesAdapterOnClickHandler,
         LoaderManager.LoaderCallbacks<PopularMoviesQueryResult> {
 
     private final String POPULAR_CRITERIA = "popular";

@@ -6,8 +6,9 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import com.aimatus.popularmovies.movie.PopularMovie;
+
 import com.aimatus.popularmovies.R;
+import com.aimatus.popularmovies.movie.PopularMovie;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
@@ -51,5 +52,9 @@ public class PopularMoviesAdapter extends RecyclerView.Adapter<PopularMoviesView
     public void setMovies(List<PopularMovie> movies) {
         this.movies = movies;
         notifyDataSetChanged();
+    }
+
+    public interface PopularMoviesAdapterOnClickHandler {
+        void onClick(PopularMovie movie);
     }
 }

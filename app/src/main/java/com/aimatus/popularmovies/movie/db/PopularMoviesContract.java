@@ -7,10 +7,9 @@ public class PopularMoviesContract {
 
     public static final String AUTHORITY = "com.aimatus.popularmoviesoreo";
     public static final String PATH_MOVIES = "movies";
-    static final Uri BASE_CONTENT_URI = Uri.parse("content://" + AUTHORITY);
-
     public static final String DATABASE_NAME = "popularmovies.db";
     public static final int DATABASE_VERSION = 1;
+    static final Uri BASE_CONTENT_URI = Uri.parse("content://" + AUTHORITY);
 
     public static final class MovieEntry implements BaseColumns {
 
@@ -24,10 +23,10 @@ public class PopularMoviesContract {
 
         public static final String CREATE_TABLE
                 = String.format("CREATE TABLE %1$s (" +
-                "%2$s INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                "%3$s INTEGER NOT NULL, " +
-                "%4$s TEXT NOT NULL, " +
-                "%5$s TIMESTAMP DEFAULT CURRENT_TIMESTAMP)",
+                        "%2$s INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                        "%3$s INTEGER NOT NULL, " +
+                        "%4$s TEXT NOT NULL, " +
+                        "%5$s TIMESTAMP DEFAULT CURRENT_TIMESTAMP)",
                 TABLE_NAME, _ID, COLUMN_CUSTOM_ID, COLUMN_JSON_MOVIE, COLUMN_TIMESTAMP);
 
         public static final String DELETE_TABLE

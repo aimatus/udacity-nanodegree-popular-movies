@@ -15,12 +15,12 @@ import java.util.List;
 
 public class MovieVideosAdapter extends RecyclerView.Adapter<MovieVideosAdapter.TrailersViewHolder> {
 
-    private static MovieVideosOnClickHandler mMovieVideosOnClickHandler;
+    private static MovieVideosAdapterOnClickHandler mMovieVideosAdapterOnClickHandler;
     private static List<MovieVideo> trailers;
 
-    MovieVideosAdapter(List<MovieVideo> trailers, MovieVideosOnClickHandler movieVideosOnClickHandler) {
+    MovieVideosAdapter(List<MovieVideo> trailers, MovieVideosAdapterOnClickHandler movieVideosAdapterOnClickHandler) {
         MovieVideosAdapter.trailers = trailers;
-        mMovieVideosOnClickHandler = movieVideosOnClickHandler;
+        mMovieVideosAdapterOnClickHandler = movieVideosAdapterOnClickHandler;
     }
 
     @NonNull
@@ -47,6 +47,10 @@ public class MovieVideosAdapter extends RecyclerView.Adapter<MovieVideosAdapter.
         return trailers.size();
     }
 
+    public interface MovieVideosAdapterOnClickHandler {
+        void onClick(MovieVideo video);
+    }
+
     public static class TrailersViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         TextView trailerNameTextView;
@@ -61,7 +65,7 @@ public class MovieVideosAdapter extends RecyclerView.Adapter<MovieVideosAdapter.
         public void onClick(View view) {
             int adapterPosition = getAdapterPosition();
             MovieVideo trailer = trailers.get(adapterPosition);
-            mMovieVideosOnClickHandler.onClick(trailer);
+            mMovieVideosAdapterOnClickHandler.onClick(trailer);
         }
     }
 

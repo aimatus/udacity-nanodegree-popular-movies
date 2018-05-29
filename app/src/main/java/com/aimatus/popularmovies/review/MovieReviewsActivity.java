@@ -17,9 +17,11 @@ import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+
 import com.aimatus.popularmovies.R;
 import com.aimatus.popularmovies.utils.NetworkUtils;
 import com.google.gson.Gson;
+
 import java.io.IOException;
 import java.net.URL;
 import java.util.List;
@@ -53,7 +55,7 @@ public class MovieReviewsActivity extends AppCompatActivity implements LoaderMan
 
     private void initViews() {
         mParentActivity = this;
-        mRecyclerView =  findViewById(R.id.rv_reviews);
+        mRecyclerView = findViewById(R.id.rv_reviews);
         mProgressBar = findViewById(R.id.pb_reviews_loading_indicator);
         mReviewsErrorTextView = findViewById(R.id.tv_reviews_error);
         mFrameLayout = findViewById(R.id.fl_reviews);

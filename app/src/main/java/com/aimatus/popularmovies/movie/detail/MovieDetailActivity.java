@@ -40,7 +40,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MovieDetailActivity extends AppCompatActivity
-        implements LoaderManager.LoaderCallbacks<Object>, MovieVideosOnClickHandler {
+        implements LoaderManager.LoaderCallbacks<Object>, MovieVideosAdapter.MovieVideosAdapterOnClickHandler {
 
     private final int LOADER_IS_FAVORITE = 1;
     private final int LOADER_FETCH_MOVIE_TRAILERS = 2;

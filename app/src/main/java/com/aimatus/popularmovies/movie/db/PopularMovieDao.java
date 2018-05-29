@@ -4,9 +4,11 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
+
 import com.aimatus.popularmovies.movie.PopularMovie;
 import com.aimatus.popularmovies.movie.db.PopularMoviesContract.MovieEntry;
 import com.google.gson.Gson;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,7 +25,7 @@ public class PopularMovieDao {
     public List<PopularMovie> getFavoriteMovies() {
         Gson gson = new Gson();
         Cursor cursor = context.getContentResolver().query(MovieEntry.CONTENT_URI,
-                        null, null, null, MovieEntry.COLUMN_TIMESTAMP);
+                null, null, null, MovieEntry.COLUMN_TIMESTAMP);
         List<PopularMovie> movies = new ArrayList<>();
         populateMoviesList(gson, cursor, movies);
         closeCursor(cursor);
