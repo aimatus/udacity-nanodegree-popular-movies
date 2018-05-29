@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.AsyncTaskLoader;
 import android.support.v4.content.Loader;
@@ -41,9 +42,13 @@ public class MovieReviewsActivity extends AppCompatActivity implements LoaderMan
         initViews();
         Intent intent = getIntent();
         if (intent.hasExtra(getString(R.string.movie_id_key))) {
-            movieId = intent.getIntExtra(getString(R.string.movie_id_key), 0);
-            getSupportLoaderManager().initLoader(getResources().getInteger(R.integer.movie_reviews_loader_id), null, this);
+            loadMovieReviews(intent);
         }
+    }
+
+    private void loadMovieReviews(Intent intent) {
+        movieId = intent.getIntExtra(getString(R.string.movie_id_key), 0);
+        getSupportLoaderManager().initLoader(getResources().getInteger(R.integer.movie_reviews_loader_id), null, this);
     }
 
     private void initViews() {
@@ -78,6 +83,11 @@ public class MovieReviewsActivity extends AppCompatActivity implements LoaderMan
                     return null;
                 }
                 URL moviesQuery = NetworkUtils.getMovieReviewsUrl(movieId);
+                return getMovieReviewsQueryResult(moviesQuery);
+            }
+
+            @Nullable
+            private MovieReviewsQueryResult getMovieReviewsQueryResult(URL moviesQuery) {
                 try {
                     String jsonMovieReviews = NetworkUtils.getResponseFromHttpUrl(moviesQuery);
                     Gson gson = new Gson();

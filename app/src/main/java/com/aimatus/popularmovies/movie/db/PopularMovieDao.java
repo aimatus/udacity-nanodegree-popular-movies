@@ -5,6 +5,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
 import com.aimatus.popularmovies.movie.PopularMovie;
+import com.aimatus.popularmovies.movie.db.PopularMoviesContract.MovieEntry;
 import com.google.gson.Gson;
 import java.util.ArrayList;
 import java.util.List;
@@ -21,8 +22,8 @@ public class PopularMovieDao {
 
     public List<PopularMovie> getFavoriteMovies() {
         Gson gson = new Gson();
-        Cursor cursor = context.getContentResolver().query(PopularMoviesContract.MovieEntry.CONTENT_URI,
-                        null, null, null, PopularMoviesContract.MovieEntry.COLUMN_TIMESTAMP);
+        Cursor cursor = context.getContentResolver().query(MovieEntry.CONTENT_URI,
+                        null, null, null, MovieEntry.COLUMN_TIMESTAMP);
         List<PopularMovie> movies = new ArrayList<>();
         populateMoviesList(gson, cursor, movies);
         closeCursor(cursor);
@@ -31,7 +32,7 @@ public class PopularMovieDao {
 
     private void populateMoviesList(Gson gson, Cursor cursor, List<PopularMovie> movies) {
         while (cursor != null && cursor.moveToNext()) {
-            String movieJson = cursor.getString(cursor.getColumnIndex(PopularMoviesContract.MovieEntry.COLUMN_JSON_MOVIE));
+            String movieJson = cursor.getString(cursor.getColumnIndex(MovieEntry.COLUMN_JSON_MOVIE));
             PopularMovie movie = gson.fromJson(movieJson, PopularMovie.class);
             movies.add(movie);
         }
@@ -39,29 +40,28 @@ public class PopularMovieDao {
 
     public void addMovieToFavorites(PopularMovie movie) {
         ContentValues contentValues = new ContentValues();
-        contentValues.put(PopularMoviesContract.MovieEntry.COLUMN_CUSTOM_ID, movie.getId());
-        contentValues.put(PopularMoviesContract.MovieEntry.COLUMN_JSON_MOVIE, gson.toJson(movie));
-        context.getContentResolver().insert(PopularMoviesContract.MovieEntry.CONTENT_URI, contentValues);
+        contentValues.put(MovieEntry.COLUMN_CUSTOM_ID, movie.getId());
+        contentValues.put(MovieEntry.COLUMN_JSON_MOVIE, gson.toJson(movie));
+        context.getContentResolver().insert(MovieEntry.CONTENT_URI, contentValues);
     }
 
     public void removeMovieFromFavorites(PopularMovie movie) {
-        Uri uri = PopularMoviesContract.MovieEntry.CONTENT_URI;
+        Uri uri = MovieEntry.CONTENT_URI;
         String id = Integer.toString(movie.getId());
         uri = uri.buildUpon().appendPath(id).build();
         context.getContentResolver().delete(uri, null, null);
     }
 
     public boolean isFavorite(PopularMovie movie) {
-        Uri uri = PopularMoviesContract.MovieEntry.CONTENT_URI;
         String id = Integer.toString(movie.getId());
-        uri = uri.buildUpon().appendPath(id).build();
-        String selection = PopularMoviesContract.MovieEntry.COLUMN_CUSTOM_ID + " = " + movie.getId();
+        Uri uri = MovieEntry.CONTENT_URI.buildUpon().appendPath(id).build();
+        String selection = MovieEntry.COLUMN_CUSTOM_ID + " = " + movie.getId();
         Cursor cursor = context.getContentResolver().query(uri, null, selection, null, null);
-        if (cursor != null && cursor.moveToNext()) {
-            return true;
+        if (cursor == null || !cursor.moveToNext()) {
+            closeCursor(cursor);
+            return false;
         }
-        closeCursor(cursor);
-        return false;
+        return true;
     }
 
     private void closeCursor(Cursor cursor) {

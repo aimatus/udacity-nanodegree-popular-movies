@@ -42,10 +42,10 @@ import java.util.List;
 public class MovieDetailActivity extends AppCompatActivity
         implements LoaderManager.LoaderCallbacks<Object>, MovieVideosOnClickHandler {
 
-    private static final int LOADER_IS_FAVORITE = 1;
-    private static final int LOADER_FETCH_MOVIE_TRAILERS = 2;
-    private static final int LOADER_ADD_TO_FAVORITES = 3;
-    private static final int LOADER_REMOVE_FROM_FAVORITES = 4;
+    private final int LOADER_IS_FAVORITE = 1;
+    private final int LOADER_FETCH_MOVIE_TRAILERS = 2;
+    private final int LOADER_ADD_TO_FAVORITES = 3;
+    private final int LOADER_REMOVE_FROM_FAVORITES = 4;
 
     private Activity mParentActivity;
     private TextView mMovieTitleTextView;
@@ -154,15 +154,24 @@ public class MovieDetailActivity extends AppCompatActivity
 
     public void favoriteOnClickAction(View view) {
         cancelToastMessageDisplaying();
-        if (mFavoriteImageButton.getTag().equals(getString(R.string.is_favorite_tag))) {
-            mFavoriteImageButton.setImageResource(R.drawable.ic_favorite_border_24dp);
-            mFavoriteImageButton.setTag(getString(R.string.is_not_favorite_tag));
-            getSupportLoaderManager().initLoader(LOADER_REMOVE_FROM_FAVORITES, null, this);
-        } else if (mFavoriteImageButton.getTag().equals(getResources().getString(R.string.is_not_favorite_tag))) {
-            mFavoriteImageButton.setImageResource(R.drawable.ic_favorite_24dp);
-            mFavoriteImageButton.setTag(getString(R.string.is_favorite_tag));
-            getSupportLoaderManager().initLoader(LOADER_ADD_TO_FAVORITES, null, this);
+        Object currentFavoriteStatus = mFavoriteImageButton.getTag();
+        if (currentFavoriteStatus.equals(getString(R.string.is_favorite_tag))) {
+            removeFromFavorites();
+        } else if (currentFavoriteStatus.equals(getResources().getString(R.string.is_not_favorite_tag))) {
+            addToFavorites();
         }
+    }
+
+    private void addToFavorites() {
+        mFavoriteImageButton.setImageResource(R.drawable.ic_favorite_24dp);
+        mFavoriteImageButton.setTag(getString(R.string.is_favorite_tag));
+        getSupportLoaderManager().initLoader(LOADER_ADD_TO_FAVORITES, null, this);
+    }
+
+    private void removeFromFavorites() {
+        mFavoriteImageButton.setImageResource(R.drawable.ic_favorite_border_24dp);
+        mFavoriteImageButton.setTag(getString(R.string.is_not_favorite_tag));
+        getSupportLoaderManager().initLoader(LOADER_REMOVE_FROM_FAVORITES, null, this);
     }
 
     private void cancelToastMessageDisplaying() {
@@ -192,8 +201,7 @@ public class MovieDetailActivity extends AppCompatActivity
         if (mTrailers != null && mTrailers.size() > 0) {
             MovieVideo video = mTrailers.get(0);
             Uri youtubeUri = Uri.parse(getString(R.string.youtube_video_url, video.getKey()));
-            ShareCompat.IntentBuilder
-                    .from(this)
+            ShareCompat.IntentBuilder.from(this)
                     .setType(getString(R.string.trailer_mime_type))
                     .setChooserTitle(R.string.trailer_chooser_title)
                     .setText(youtubeUri.toString())
@@ -274,13 +282,11 @@ public class MovieDetailActivity extends AppCompatActivity
                 setupFavoriteIcon((boolean) object);
                 break;
             case LOADER_ADD_TO_FAVORITES:
-                mToast = Toast.makeText(getApplicationContext(),
-                        getResources().getString(R.string.added_to_favorites), Toast.LENGTH_SHORT);
+                mToast = Toast.makeText(getApplicationContext(), getResources().getString(R.string.added_to_favorites), Toast.LENGTH_SHORT);
                 mToast.show();
                 break;
             case LOADER_REMOVE_FROM_FAVORITES:
-                mToast = Toast.makeText(getApplicationContext(),
-                        getResources().getString(R.string.removed_from_favorites), Toast.LENGTH_SHORT);
+                mToast = Toast.makeText(getApplicationContext(), getResources().getString(R.string.removed_from_favorites), Toast.LENGTH_SHORT);
                 mToast.show();
                 break;
         }
@@ -301,6 +307,18 @@ public class MovieDetailActivity extends AppCompatActivity
             return;
         }
         mTrailersError.setVisibility(View.INVISIBLE);
+        addTrailers(movieVideosQueryResult);
+        populateRecyclerView();
+    }
+
+    private void populateRecyclerView() {
+        RecyclerView trailersRecyclerView = findViewById(R.id.rv_movie_trailers);
+        trailersRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        MovieVideosAdapter movieVideosAdapter = new MovieVideosAdapter(mTrailers, this);
+        trailersRecyclerView.setAdapter(movieVideosAdapter);
+    }
+
+    private void addTrailers(MovieVideosQueryResult movieVideosQueryResult) {
         mTrailers = new ArrayList<>();
         for (MovieVideo video : movieVideosQueryResult.getResults()) {
             if (video.getType().equals(getString(R.string.trailer))
@@ -308,10 +326,6 @@ public class MovieDetailActivity extends AppCompatActivity
                 mTrailers.add(video);
             }
         }
-        RecyclerView trailersRecyclerView = findViewById(R.id.rv_movie_trailers);
-        trailersRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        MovieVideosAdapter movieVideosAdapter = new MovieVideosAdapter(mTrailers, this);
-        trailersRecyclerView.setAdapter(movieVideosAdapter);
     }
 
     private void openYoutubeVideo(String videoKey) {

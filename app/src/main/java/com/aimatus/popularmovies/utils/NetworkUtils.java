@@ -47,36 +47,38 @@ public class NetworkUtils {
 
     @Nullable
     private static URL getUrl(String popularMoviesUrl) {
-        Uri builtUri = Uri.parse(popularMoviesUrl).buildUpon()
-                .appendQueryParameter(API_KEY_PARAM, APY_KEY)
-                .build();
-        URL url = null;
+        Uri builtUri = Uri.parse(popularMoviesUrl).buildUpon().appendQueryParameter(API_KEY_PARAM, APY_KEY).build();
         try {
-            url = new URL(builtUri.toString());
+            return new URL(builtUri.toString());
         } catch (MalformedURLException e) {
             e.printStackTrace();
         }
-        return url;
+        return null;
     }
 
     public static String getResponseFromHttpUrl(URL url) throws IOException {
         HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
         try {
-            InputStream in = urlConnection.getInputStream();
-            Scanner scanner = new Scanner(in);
-            scanner.useDelimiter("\\A");
-            boolean hasInput = scanner.hasNext();
-            if (hasInput) {
-                return scanner.next();
-            } else {
-                return null;
-            }
+            return getResponseString(urlConnection);
         } catch (FileNotFoundException e) {
             Log.e(NetworkUtils.class.getSimpleName(), INVALID_URL_ERROR_MESSAGE);
             e.printStackTrace();
             return null;
         } finally {
             urlConnection.disconnect();
+        }
+    }
+
+    @Nullable
+    private static String getResponseString(HttpURLConnection urlConnection) throws IOException {
+        InputStream in = urlConnection.getInputStream();
+        Scanner scanner = new Scanner(in);
+        scanner.useDelimiter("\\A");
+        boolean hasInput = scanner.hasNext();
+        if (hasInput) {
+            return scanner.next();
+        } else {
+            return null;
         }
     }
 

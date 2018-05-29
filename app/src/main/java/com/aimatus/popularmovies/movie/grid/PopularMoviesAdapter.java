@@ -30,12 +30,11 @@ public class PopularMoviesAdapter extends RecyclerView.Adapter<PopularMoviesView
         LayoutInflater layoutInflater = LayoutInflater.from(context);
         final boolean shouldAttachToParentImmediately = false;
         View itemView = layoutInflater.inflate(layoutIdForMovieItem, parent, shouldAttachToParentImmediately);
-        PopularMoviesViewHolder popularMoviesViewHolder = new PopularMoviesViewHolder(itemView, this);
-        return popularMoviesViewHolder;
+        return new PopularMoviesViewHolder(itemView, this);
     }
 
     @Override
-    public void onBindViewHolder(PopularMoviesViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull PopularMoviesViewHolder holder, int position) {
         PopularMovie movie = this.movies.get(position);
         String url = context.getString(R.string.the_movie_db_poster_path, movie.getPosterPath());
         Picasso.get().load(url).into(holder.posterImageView);

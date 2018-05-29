@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.AsyncTaskLoader;
 import android.support.v4.content.Loader;
@@ -18,7 +19,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-
 import com.aimatus.popularmovies.R;
 import com.aimatus.popularmovies.movie.PopularMovie;
 import com.aimatus.popularmovies.movie.PopularMoviesQueryResult;
@@ -26,12 +26,10 @@ import com.aimatus.popularmovies.movie.db.PopularMovieDao;
 import com.aimatus.popularmovies.movie.detail.MovieDetailActivity;
 import com.aimatus.popularmovies.utils.NetworkUtils;
 import com.google.gson.Gson;
-
 import java.io.IOException;
 import java.net.URL;
 
-public class MoviesGridActivity extends AppCompatActivity
-        implements PopularMoviesAdapterOnClickHandler,
+public class MoviesGridActivity extends AppCompatActivity implements PopularMoviesAdapterOnClickHandler,
         LoaderManager.LoaderCallbacks<PopularMoviesQueryResult> {
 
     private final String POPULAR_CRITERIA = "popular";
@@ -103,9 +101,7 @@ public class MoviesGridActivity extends AppCompatActivity
         swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                getSupportLoaderManager().restartLoader(
-                        getResources().getInteger(R.integer.popular_movies_loader_id),
-                        null, moviesGridActivity);
+                getSupportLoaderManager().restartLoader(getResources().getInteger(R.integer.popular_movies_loader_id), null, moviesGridActivity);
             }
         });
     }
@@ -182,14 +178,16 @@ public class MoviesGridActivity extends AppCompatActivity
                 if (NetworkUtils.hasNoConnectivity(mParentActivity)) {
                     return null;
                 }
-                URL moviesQuery;
+                return getPopularMoviesQueryResult();
+            }
+
+            @Nullable
+            private PopularMoviesQueryResult getPopularMoviesQueryResult() {
                 switch (mQueryCriteria) {
                     case POPULAR_CRITERIA:
-                        moviesQuery = NetworkUtils.getPopularMoviesUrl();
-                        return getMoviesFromInternet(moviesQuery);
+                        return getMoviesFromInternet(NetworkUtils.getPopularMoviesUrl());
                     case TOP_RATED_CRITERIA:
-                        moviesQuery = NetworkUtils.getTopRatedMoviesUrl();
-                        return getMoviesFromInternet(moviesQuery);
+                        return getMoviesFromInternet(NetworkUtils.getTopRatedMoviesUrl());
                     default:
                         return null;
                 }
