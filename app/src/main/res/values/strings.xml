@@ -16,7 +16,6 @@
     <string name="play_icon">Play icon</string>
     <string name="trailers">Trailers</string>
     <string name="reviews">Reviews</string>
-
     <string name="trailer_mime_type">text/plain</string>
     <string name="trailer_chooser_title">Share via…</string>
 
@@ -39,10 +38,10 @@
     <string name="trailer" translatable="false">Trailer</string>
     <string name="youtube" translatable="false">YouTube</string>
     <string name="favorites_criteria" translatable="false">favorites</string>
+    <string name="share">Share</string>
 
     <!-- URLs -->
     <string name="youtube_video_url" translatable="false">https://www.youtube.com/watch?v=%1$s</string>
     <string name="the_movie_db_poster_path" translatable="false">http://image.tmdb.org/t/p/w185%1$s</string>
-    <string name="share">Share</string>
 
 </resources>
